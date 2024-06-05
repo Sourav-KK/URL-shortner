@@ -19,7 +19,6 @@ const createUrlHelper = async (enteredUrl: string) => {
     }
 
     const databaseResponse = await createURL(enteredUrl, uniqueID);
-    console.log(databaseResponse, "databaseResponse");
 
     if (!databaseResponse) {
       throw {
@@ -34,7 +33,6 @@ const createUrlHelper = async (enteredUrl: string) => {
       newUrl: databaseResponse.shortendUrl,
     };
   } catch (error) {
-    console.log(error, "erro in url helpers");
     throw error;
   }
 };
@@ -49,7 +47,6 @@ const retrieveOneUrl = async (id: string) => {
     }
 
     const response = await oneURL(id);
-    console.log("first");
     if (!response.originalUrl || !response.shortendUrl) {
       throw {
         statusCode: 500,
@@ -57,23 +54,20 @@ const retrieveOneUrl = async (id: string) => {
       };
     }
 
-    console.log("after");
     const isUpdated = await updateOne(id);
 
-    if (!isUpdated.acknowledged || isUpdated.modifiedCount !== 1 ) {
+    if (!isUpdated.acknowledged || isUpdated.modifiedCount !== 1) {
       console.log("updation erroril aane");
       throw {
         statusCode: 500,
         errMessage: "Unexpected error",
       };
     }
-    console.log("nod error in updation");
 
     const realUrl: string = response.originalUrl;
 
     return realUrl;
   } catch (error: any) {
-    console.log(error.message, "Error in retrieveOneUrl");
     throw {
       statusCode: 500,
       errMessage: error.message,
